@@ -25,3 +25,9 @@ body {
     text-wrap: balance;
   }
 }
+
+.tableContainer {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40px; /* Opcional: espaço no topo */
+}

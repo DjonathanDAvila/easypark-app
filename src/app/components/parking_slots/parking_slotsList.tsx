@@ -8,6 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 
+import styles from "./styles.module.css";
+
 interface Vehicle {
   id: number;
   slot_number: string;
@@ -50,15 +52,14 @@ const VehicleTable = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper}  className={styles.tableContainer}>
       <Table sx={{ minWidth: 650 }} aria-label="vehicle table">
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>Placa</TableCell>
-            <TableCell>Modelo</TableCell>
-            <TableCell>Cor</TableCell>
-            <TableCell>Criado em</TableCell>
+            <TableCell>Vaga</TableCell>
+            <TableCell>Status</TableCell>            
+            {/* <TableCell>Ações</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>

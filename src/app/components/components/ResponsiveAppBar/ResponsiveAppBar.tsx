@@ -19,7 +19,7 @@ import { AppUtils } from "../../../../shared/AppUtils";
 import styles from "./styles.module.css";
 import Link from "next/link";
 
-const pages = [{ name: "Veículos", path: AppUtils.PARKING_SLOTS_PATH }];
+const pages = [{ name: "Vagas", path: AppUtils.PARKING_SLOTS_PATH }];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
