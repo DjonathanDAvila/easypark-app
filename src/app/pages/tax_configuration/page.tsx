@@ -1,14 +1,15 @@
 "use client"
 
 import AppBar from '../../components/components/ResponsiveAppBar/ResponsiveAppBar';
+import TaxForm from '../../components/tax_form/TaxForm';
 
-const HomePage = () => {
+const TaxConfigurationPage = () => {
   return (
     <div>
         <AppBar></AppBar>
-        <h1>Hello</h1>
+        <TaxForm></TaxForm>
     </div>
   );
 };
 
-export default HomePage;
+export default TaxConfigurationPage;
