@@ -16,12 +16,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.19.1' 
+          node-version: '18'
 
       - name: Install dependencies
         run: |
           npm install
-          npm run build # Se precisar construir seu projeto antes dos testes
+          npm run build
+
+      - name: Start Next.js server
+        run: npm run start &
+        env:
+          PORT: 3000
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:3000
 
       - name: Run Cypress Tests
         run: npx cypress run
