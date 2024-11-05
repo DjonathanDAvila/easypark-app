@@ -19,7 +19,7 @@ import { AppUtils } from "../../../../shared/AppUtils";
 import styles from "./styles.module.css";
 import Link from "next/link";
 
-const pages = [{ name: "Veículos", path: AppUtils.PARKING_SLOTS_PATH }];
+const pages = [{ name: "Vagas", path: AppUtils.PARKING_SLOTS_PATH }];
 const settings = [
   { name: "Perfil", path: "/profile" },
   { name: "Configuração das Taxas", path: AppUtils.TAX_CONFIGURATION_PATH },
@@ -157,6 +157,7 @@ function ResponsiveAppBar() {
           >
             {pages.map((page) => (
               <Button
+                className="vagas"
                 key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}

@@ -4,7 +4,7 @@ describe('Navegação para Vagas', () => {
       cy.visit('http://localhost:3000');
   
       // Aguarda a renderização do botão "Vagas" e clica nele
-      cy.contains('button', 'Vagas').click();
+      cy.contains('a', 'Vagas').click();
   
       // Verifica se a URL está correta após o clique
       cy.url().should('include', '/parking_slots');
