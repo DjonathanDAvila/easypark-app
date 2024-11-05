@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const result = await sql`
       SELECT * FROM fee_configuration
-      ORDER BY creation_date DESC
+      ORDER BY creation_date DESC 
       LIMIT 1;
     `;
     if (result.rows.length > 0) {
