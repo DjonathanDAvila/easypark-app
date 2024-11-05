@@ -1,39 +1,63 @@
-import { Box, Button, Card, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Box, Button, Card, TextField, Typography, Alert } from "@mui/material";
 
 const TaxForm = () => {
   const [baseRate, setBaseRate] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
 
-  const handleSave = async () => {
+  const fetchLastConfiguration = async () => {
+    try {
+      const response = await fetch("/api/fee_configuration/get_last_configuration");
+      if (response.ok) {
+        const data = await response.json();
+        setBaseRate(data.base_rate);
+        setHourlyRate(data.additional_rate);
+      } else {
+        console.error("Erro ao buscar a última configuração de taxas");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar a última configuração de taxas:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLastConfiguration();
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const newConfiguration = {
+      base_rate: parseFloat(baseRate),
+      additional_rate: parseFloat(hourlyRate),
+    };
+
     try {
       const response = await fetch("/api/fee_configuration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          base_rate: parseFloat(baseRate),
-          additional_rate: parseFloat(hourlyRate),
-        }),
+        body: JSON.stringify(newConfiguration),
       });
 
-      if (!response.ok) {
-        throw new Error("Erro ao adicionar configuração de taxas");
-      }
+      if (response.ok) {
+        setShowAlert(true);
 
-      // Aqui você pode adicionar alguma lógica adicional, como limpar os campos ou exibir uma mensagem de sucesso.
-      setBaseRate("");
-      setHourlyRate("");
-      setError(null);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
+      } else {
+        console.error("Erro ao adicionar configuração de taxas");
+      }
     } catch (error) {
       console.error("Erro ao adicionar configuração de taxas:", error);
-      setError("Erro ao adicionar configuração de taxas");
     }
   };
 
   return (
     <Box
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -47,6 +71,11 @@ const TaxForm = () => {
       noValidate
       autoComplete="off"
     >
+      {showAlert && (
+        <Alert variant="filled" severity="success">
+          Configurações atualizadas com sucesso!
+        </Alert>
+      )}
       <Card
         sx={{ padding: 4, display: "flex", flexDirection: "column", gap: 2 }}
       >
@@ -60,10 +89,8 @@ const TaxForm = () => {
           variant="outlined"
           value={baseRate}
           onChange={(e) => setBaseRate(e.target.value)}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
+          InputLabelProps={{
+            shrink: true,
           }}
         />
         <TextField
@@ -73,13 +100,10 @@ const TaxForm = () => {
           variant="outlined"
           value={hourlyRate}
           onChange={(e) => setHourlyRate(e.target.value)}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
+          InputLabelProps={{
+            shrink: true,
           }}
         />
-        {error && <Typography color="error">{error}</Typography>}
         <Box
           sx={{
             display: "flex",
@@ -87,7 +111,7 @@ const TaxForm = () => {
             marginTop: 2,
           }}
         >
-          <Button variant="contained" sx={{ flex: 1 }} onClick={handleSave}>
+          <Button type="submit" variant="contained" sx={{ flex: 1 }}>
             Salvar
           </Button>
           <Button variant="text" sx={{ flex: 1 }}>
