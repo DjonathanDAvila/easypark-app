@@ -19,8 +19,13 @@ import { AppUtils } from "../../../../shared/AppUtils";
 import styles from "./styles.module.css";
 import Link from "next/link";
 
-const pages = [{ name: "Vagas", path: AppUtils.PARKING_SLOTS_PATH }];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [{ name: "Veículos", path: AppUtils.PARKING_SLOTS_PATH }];
+const settings = [
+  { name: "Perfil", path: "/profile" },
+  { name: "Configuração das Taxas", path: AppUtils.TAX_CONFIGURATION_PATH },
+  { name: "Logout", path: "/logout" }
+];
+
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -94,7 +99,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {/* {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: "center" }}>
                     <Link
@@ -105,6 +110,18 @@ function ResponsiveAppBar() {
                     </Link>
                   </Typography>
                 </MenuItem>
+              ))} */}
+              {settings.map((setting) => (
+              <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                <Typography sx={{ textAlign: "center" }}>
+                  <Link
+                    href={setting.path}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {setting.name}
+                  </Link>
+                </Typography>
+              </MenuItem>
               ))}
             </Menu>
           </Box>
@@ -175,13 +192,15 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
+            {settings.map((setting) => (
+              <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                <Typography sx={{ textAlign: "center" }}>
+                  <Link href={setting.path} style={{ textDecoration: "none", color: "inherit" }}>
+                    {setting.name}
+                  </Link>
+                </Typography>
+              </MenuItem>
+            ))}
             </Menu>
           </Box>
         </Toolbar>
