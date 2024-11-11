@@ -2,18 +2,10 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const plate = searchParams.get("id");
-
+export async function GET() {
   try {
-    let query;
-    if (plate) {
-      query = await sql`SELECT * FROM transactions WHERE plate = ${plate};`;
-    } else {
-      query = await sql`SELECT * FROM transactions;`;
-    }
-    return NextResponse.json({ transactions: query.rows });
+    const { rows } = await sql`SELECT * FROM transactions;`;
+    return NextResponse.json({ transactions: rows });
   } catch (error) {
     console.error("Erro ao consultar transações:", error);
     return NextResponse.json({ error: "Erro ao buscar transações" }, { status: 500 });
