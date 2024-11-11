@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, TextField, Typography, Alert } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const TaxForm = () => {
   const [baseRate, setBaseRate] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const router = useRouter();
 
   const fetchLastConfiguration = async () => {
     try {
-      const response = await fetch("/api/fee_configuration/get_last_configuration");
+      const response = await fetch(
+        "/api/fee_configuration/get_last_configuration"
+      );
       if (response.ok) {
         const data = await response.json();
         setBaseRate(data.base_rate);
@@ -52,6 +56,10 @@ const TaxForm = () => {
     } catch (error) {
       console.error("Erro ao adicionar configuração de taxas:", error);
     }
+  };
+
+  const handleCancel = () => {
+    router.push("/pages/home");
   };
 
   return (
@@ -114,7 +122,7 @@ const TaxForm = () => {
           <Button type="submit" variant="contained" sx={{ flex: 1 }}>
             Salvar
           </Button>
-          <Button variant="text" sx={{ flex: 1 }}>
+          <Button variant="text" onClick={handleCancel} sx={{ flex: 1 }}>
             Cancelar
           </Button>
         </Box>
