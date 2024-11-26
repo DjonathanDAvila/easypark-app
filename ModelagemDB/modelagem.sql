@@ -22,9 +22,11 @@ CREATE TABLE transactions (
 CREATE TABLE fee_configuration (
     id SERIAL PRIMARY KEY,                 -- Identificador único da configuração
     base_rate DECIMAL(10, 2) NOT NULL,     -- Valor padrão para a primeira hora
-    additional_rate DECIMAL(10, 2) NOT NULL -- Valor adicional por hora extra
+    additional_rate DECIMAL(10, 2) NOT NULL, -- Valor adicional por hora extra
+	creation_date TIMESTEMP
 );
 
+/*
 -- Insere valores padrão na tabela de configuração de tarifas
 INSERT INTO fee_configuration (base_rate, additional_rate) VALUES (15.00, 10.00);
 
@@ -57,3 +59,6 @@ SET hora_saida = ?, valor_pago = ?
 WHERE id = ?;
 
 UPDATE Vaga SET disponivel = true WHERE id = ?;
+
+INSERT INTO parking_slots (slot_number) values ('D5')
+*/

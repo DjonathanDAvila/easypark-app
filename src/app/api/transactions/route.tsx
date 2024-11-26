@@ -25,13 +25,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    debugger;
-    const { plate, vehicle_type, slot_id, entry_time, exit_time, fee } =
-      await request.json();
+    const { plate, vehicle_type, slot_id, entry_time, exit_time, fee } = await request.json();
     await sql`
       INSERT INTO transactions (plate, vehicle_type, slot_id, entry_time, exit_time, fee)
       VALUES (${plate}, ${vehicle_type}, ${slot_id}, ${entry_time}, ${exit_time}, ${fee});
     `;
+    await updateSlotStatus(slot_id, 'OCCUPIED');
     return NextResponse.json({ message: "Transação adicionada com sucesso" });
   } catch (error) {
     console.error("Erro ao adicionar transação:", error);
@@ -47,7 +46,13 @@ export async function DELETE(request: Request) {
   const id = searchParams.get("id");
 
   try {
+    const transactionResult = await sql`SELECT slot_id FROM transactions WHERE id = ${id};`;
+    const slotId = transactionResult.rows[0]?.slot_id;
+
     await sql`DELETE FROM transactions WHERE id = ${id};`;
+    if (slotId) {
+      await updateSlotStatus(slotId, 'AVAILABLE');
+    }
     return NextResponse.json({ message: "Transação removida com sucesso" });
   } catch (error) {
     console.error("Erro ao remover transação:", error);
@@ -96,10 +101,25 @@ export async function PATCH(request: Request) {
       WHERE id = ${id};
     `;
 
+    const transactionResult = await sql`SELECT slot_id FROM transactions WHERE id = ${id};`;
+    const slotId = transactionResult.rows[0]?.slot_id;
+
+    if (slotId) {
+      await updateSlotStatus(slotId, 'AVAILABLE'); // Atualiza o status da vaga para 'AVAILABLE'
+    }
+
     return NextResponse.json({ message: "Transação finalizada com sucesso" });
   } catch (error) {
     console.error("Erro ao finalizar transação:", error);
     return NextResponse.json({ error: "Erro ao finalizar transação" }, { status: 500 });
+  }
+}
+
+export async function updateSlotStatus(slotId: number, status: string) {
+  try {
+    await sql`UPDATE parking_slots SET status = ${status} WHERE id = ${slotId};`;
+  } catch (error) {
+    console.error("Erro ao atualizar status da vaga:", error);
   }
 }
 
