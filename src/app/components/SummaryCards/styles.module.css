@@ -1,0 +1,75 @@
+.summaryContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 0 auto 20px;
+  margin-top: 6px;
+}
+
+.card {
+  width: 30%;
+  text-align: center;
+  background: #fffffff6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.slotDetails, .paymentDetails {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.slotInfo, .paymentInfo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.freeSlot {
+  color: blue;
+  font-weight: bold;
+}
+
+.occupiedSlot {
+  color: purple;
+  font-weight: bold;
+}
+
+.received {
+  color: green;
+  font-weight: bold;
+}
+
+.pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.freeBadge, .occupiedBadge, .receivedBadge, .pendingBadge {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.freeBadge {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.occupiedBadge {
+  background-color: #6f42c1;
+  color: #fff;
+}
+
+.receivedBadge {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.pendingBadge {
+  background-color: #ffc107;
+  color: #fff;
+}
